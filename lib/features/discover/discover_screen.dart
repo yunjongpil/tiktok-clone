@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
@@ -55,6 +56,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: tabs.length,
       child: Builder(
@@ -71,55 +73,60 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               title: Expanded(
                 child: SizedBox(
                   height: Sizes.size44,
-                  child: TextField(
-                    controller: _editingController,
-                    onTap: _startWriting,
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Sizes.size12),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: Sizes.size12,
-                        vertical: Sizes.size10,
-                      ),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(
-                          left: Sizes.size16,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: Breakpoints.sm,
+                    ),
+                    child: TextField(
+                      controller: _editingController,
+                      onTap: _startWriting,
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(Sizes.size12),
+                          borderSide: BorderSide.none,
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.magnifyingGlass,
-                              size: Sizes.size16,
-                              color: Colors.grey.shade600,
-                            ),
-                          ],
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.size12,
+                          vertical: Sizes.size10,
                         ),
-                      ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.only(
-                          right: Sizes.size16,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(
+                            left: Sizes.size16,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              FaIcon(
+                                FontAwesomeIcons.magnifyingGlass,
+                                size: Sizes.size16,
+                                color: Colors.grey.shade600,
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            _isWriting
-                                ? GestureDetector(
-                                    onTap: _clearSearch,
-                                    child: FaIcon(
-                                      FontAwesomeIcons.circleXmark,
-                                      size: Sizes.size16,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  )
-                                : Container(),
-                          ],
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(
+                            right: Sizes.size16,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              _isWriting
+                                  ? GestureDetector(
+                                      onTap: _clearSearch,
+                                      child: FaIcon(
+                                        FontAwesomeIcons.circleXmark,
+                                        size: Sizes.size16,
+                                        color: Colors.grey.shade600,
+                                      ),
+                                    )
+                                  : Container(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -156,68 +163,78 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   padding: const EdgeInsets.all(
                     Sizes.size6,
                   ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: width > Breakpoints.lg ? 5 : 2,
                     mainAxisSpacing: Sizes.size10,
                     crossAxisSpacing: Sizes.size10,
                     childAspectRatio: (9 / 20),
                   ),
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                          Sizes.size4,
-                        )),
-                        child: AspectRatio(
-                          aspectRatio: 9 / 16,
-                          child: FadeInImage.assetNetwork(
-                            fit: BoxFit.cover,
-                            placeholder: 'assets/images/p2.jpg',
-                            image:
-                                'https://images.unsplash.com/photo-1676746424139-77f8bd8922a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MXx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60',
-                          ),
-                        ),
-                      ),
-                      Gaps.v10,
-                      const Text(
-                        "This is a very long caption for my tiktok that im upload just now currently.",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: Sizes.size16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Gaps.v8,
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 12,
-                            backgroundImage: NetworkImage(
-                              "https://avatars.githubusercontent.com/u/3612017",
+                  itemBuilder: (context, index) => LayoutBuilder(
+                    builder: (context, constraints) => Column(
+                      children: [
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                            Sizes.size4,
+                          )),
+                          child: AspectRatio(
+                            aspectRatio: 9 / 16,
+                            child: FadeInImage.assetNetwork(
+                              fit: BoxFit.cover,
+                              placeholder: 'assets/images/p2.jpg',
+                              image:
+                                  'https://images.unsplash.com/photo-1676746424139-77f8bd8922a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MXx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60',
                             ),
                           ),
-                          Gaps.h4,
-                          const Expanded(
-                            child: Text(
-                              "My avata is going to very long",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                        ),
+                        Gaps.v10,
+                        Text(
+                          "${constraints.maxWidth}This is a very long caption for my tiktok that im upload just now currently.",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: Sizes.size16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Gaps.v8,
+                        if (constraints.maxWidth < 200 ||
+                            constraints.maxWidth > 250)
+                          DefaultTextStyle(
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontWeight: FontWeight.w600,
                             ),
-                          ),
-                          Gaps.h4,
-                          FaIcon(
-                            FontAwesomeIcons.heart,
-                            size: Sizes.size16,
-                            color: Colors.grey.shade600,
-                          ),
-                          Gaps.h2,
-                          const Text("2.5M")
-                        ],
-                      )
-                    ],
+                            child: Row(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 12,
+                                  backgroundImage: NetworkImage(
+                                    "https://avatars.githubusercontent.com/u/3612017",
+                                  ),
+                                ),
+                                Gaps.h4,
+                                const Expanded(
+                                  child: Text(
+                                    "My avata is going to very long",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Gaps.h4,
+                                FaIcon(
+                                  FontAwesomeIcons.heart,
+                                  size: Sizes.size16,
+                                  color: Colors.grey.shade600,
+                                ),
+                                Gaps.h2,
+                                const Text("2.5M")
+                              ],
+                            ),
+                          )
+                      ],
+                    ),
                   ),
                 ),
                 for (var tab in tabs.skip(1))
