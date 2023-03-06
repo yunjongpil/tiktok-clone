@@ -34,6 +34,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  go_router: ^6.2.0
+
   intl: any
 
   flex_color_scheme: ^6.1.2
