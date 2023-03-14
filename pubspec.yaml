@@ -34,6 +34,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  permission_handler: ^10.2.0
+
   go_router: ^6.2.0
 
   intl: any
@@ -51,6 +53,10 @@ dependencies:
   video_player: 2.4.10
 
   visibility_detector: 0.3.3
+  camera: ^0.10.3+2
+
+  gallery_saver: ^2.3.2
+  image_picker: ^0.8.7
 
 dev_dependencies:
   flutter_test:
